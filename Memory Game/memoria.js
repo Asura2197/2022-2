@@ -1,3 +1,5 @@
+let board; //variable global
+
 function createBoard(numRows, numCols){
 
     const rows = []  //lista vacia
@@ -7,7 +9,11 @@ function createBoard(numRows, numCols){
 
         //crear casillas
         for(let j = 0; j<numCols; j++){
-            casillas.push(0)
+            casillas.push({
+                seMuestra: false,
+                emoji: "&#x1F354;"
+            })
+
         }
 
         rows.push(casillas)
@@ -34,10 +40,40 @@ const getValue = (board,row,col)=>{
     return board[row][col]
 }
 
-let board = createBoard(6,4)
-//console.log(board[5][1])
+const renderizarBoard = (board) =>{
 
-setvalue(board,5,3,7)
-printBoard(board)
+        for(let i=0; i<board.length; i++){
+        const casillas = board[i]
+        for(let j=0; j< casillas.length; j++){
+            const butCasilla = document.getElementById(`${i}_${j}`)
+            if(casillas[j].seMuestra){
+                butCasilla.innerHTML = casillas[j].emoji
+            }
+            else{
+                butCasilla.innerHTML = ""
+            }
+        }
+    }
 
-console.log(getValue(board,5,3))
+}
+
+const casillaOnClick = (row, col)=>{
+
+    const casilla = getValue(board,row,col)
+    casilla.seMuestra = true
+    renderizarBoard(board)
+}
+
+const main = () =>{
+    board = createBoard(6,4)
+    renderizarBoard(board)
+
+    setvalue(board,1,1,{
+        seMuestra: false,
+        emoji: "&#x1F370;"
+    })
+
+    renderizarBoard(board)
+}
+
+main()
